@@ -1,4 +1,4 @@
-import { getProfile, getVerifiedAccounts, openBox } from '3box'
+// import { getProfile, getVerifiedAccounts, openBox } from '3box'
 
 // Testing IDX
 import Ceramic from '@ceramicnetwork/http-client'

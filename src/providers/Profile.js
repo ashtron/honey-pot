@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 import PropTypes from 'prop-types'
-import { ThreeIdConnect, EthereumAuthProvider } from '3id-connect'
+import { ThreeIdConnect, EthereumAuthProvider } from '@3id/connect'
 
 import { getNetwork } from '../networks'
 import { useWallet } from './Wallet'

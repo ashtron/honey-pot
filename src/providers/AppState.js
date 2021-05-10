@@ -17,6 +17,7 @@ function AppStateProvider({ children }) {
     errors,
     installedApps,
     loadingAppData,
+    garden,
     ...appData
   } = useOrgData()
   const { account } = useWallet()
@@ -25,6 +26,10 @@ function AppStateProvider({ children }) {
     config?.conviction || {}
 
   const { balance, totalSupply } = useTokenBalances(account, stakeToken) // TODO: Update stake and requestToken to use connectedGarden.token
+  const { balance: wrappableBalance } = useTokenBalances(
+    account,
+    garden?.wrappableToken
+  )
   const vaultBalance = useVaultBalance(installedApps, requestToken)
   const effectiveSupply = useEffectiveSupply(totalSupply, config)
 
@@ -48,6 +53,8 @@ function AppStateProvider({ children }) {
         totalStaked,
         totalSupply,
         vaultBalance,
+        wrappableToken: garden?.wrappableToken,
+        wrappableBalance,
       }}
     >
       {children}

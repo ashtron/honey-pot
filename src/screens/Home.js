@@ -11,14 +11,17 @@ import ProposalsList from '../components/Feed/ProposalsList'
 
 import MultiModal from '../components/MultiModal/MultiModal'
 import CreateProposalScreens from '../components/ModalFlows/CreateProposalScreens/CreateProposalScreens'
+import WrapperModule from '../components/Feed/WrapperModule'
 
 import useAppLogic from '../logic/app-logic'
 import { useWallet } from '../providers/Wallet'
 import { buildGardenPath } from '../utils/routing-utils'
+import TokenWrapperScreens from '../components/ModalFlows/TokenWrapperScreens/TokenWrapperScreens'
 
 const Home = React.memo(function Home() {
   const [filterSliderVisible, setFilterSidlerVisible] = useState(false)
   const [modalVisible, setModalVisible] = useState(false)
+  const [modalMode, setModalMode] = useState(null)
   const {
     actions,
     commonPool,
@@ -29,6 +32,7 @@ const Home = React.memo(function Home() {
     proposalsFetchedCount,
     totalStaked,
     totalSupply,
+    withWrappableToken,
   } = useAppLogic()
 
   const history = useHistory()
@@ -49,10 +53,12 @@ const Home = React.memo(function Home() {
     if (account && history.location.pathname.includes('create')) {
       setModalVisible(true)
     }
+    // TODO: handle wrap modal first time the account connects
   }, [account, history])
 
-  const handleShowModal = useCallback(() => {
+  const handleShowModal = useCallback(mode => {
     setModalVisible(true)
+    setModalMode(mode)
   }, [])
 
   const handleHideModal = useCallback(() => {
@@ -140,9 +146,18 @@ const Home = React.memo(function Home() {
                     <div
                       css={`
                         margin-left: ${3 * GU}px;
+                        margin-top: ${3 * GU}px;
                       `}
                     >
-                      <HeroBanner onRequestNewProposal={handleShowModal} />
+                      {withWrappableToken && (
+                        <WrapperModule
+                          onWrap={() => handleShowModal('wrap')}
+                          onUnwrap={() => handleShowModal('unwrap')}
+                        />
+                      )}
+                      <HeroBanner
+                        onRequestNewProposal={() => handleShowModal('proposal')}
+                      />
                     </div>
                   )}
                 </div>
@@ -152,14 +167,29 @@ const Home = React.memo(function Home() {
               <div
                 css={`
                   margin-right: ${(compactMode ? 0 : 3) * GU}px;
+                  margin-top: ${3 * GU}px;
                 `}
               >
-                <HeroBanner onRequestNewProposal={handleShowModal} />
+                {withWrappableToken && (
+                  <WrapperModule
+                    onWrap={() => handleShowModal('wrap')}
+                    onUnwrap={() => handleShowModal('unwrap')}
+                  />
+                )}
+                <HeroBanner
+                  onRequestNewProposal={() => handleShowModal('proposal')}
+                />
               </div>
             )}
           </div>
-          <MultiModal visible={modalVisible} onClose={handleHideModal}>
-            <CreateProposalScreens />
+          <MultiModal
+            visible={modalVisible}
+            onClose={handleHideModal}
+            onClosed={() => setModalMode(null)}
+          >
+            {modalMode === 'proposal' && <CreateProposalScreens />}
+            {modalMode === 'wrap' && <TokenWrapperScreens mode={modalMode} />}
+            {modalMode === 'unwrap' && <TokenWrapperScreens mode={modalMode} />}
           </MultiModal>
         </div>
       )}

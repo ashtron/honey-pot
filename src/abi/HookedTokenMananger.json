@@ -1,0 +1,5 @@
+[
+  "function wrappableToken() public",
+  "function wrap(uint256 _amount) external",
+  "function unwrap(uint256 _amount) external"
+]

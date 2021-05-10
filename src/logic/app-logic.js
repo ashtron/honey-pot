@@ -10,6 +10,7 @@ export default function useAppLogic() {
     totalStaked,
     totalSupply,
     vaultBalance,
+    wrappableToken,
   } = useAppState()
 
   const actions = useActions()
@@ -30,5 +31,6 @@ export default function useAppLogic() {
     proposalsFetchedCount,
     totalStaked,
     totalSupply,
+    withWrappableToken: !!wrappableToken,
   }
 }

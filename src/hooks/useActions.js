@@ -16,6 +16,7 @@ import { VOTE_YEA } from '../constants'
 import { encodeFunctionData } from '../utils/web3-utils'
 import BigNumber from '../lib/bigNumber'
 import tokenAbi from '../abi/minimeToken.json'
+import hookedTokenManangerAbi from '../abi/HookedTokenMananger.json'
 import agreementAbi from '../abi/agreement.json'
 
 const GAS_LIMIT = 450000
@@ -38,7 +39,12 @@ export default function useActions() {
   const dandelionVotingApp = getAppByName(installedApps, env('VOTING_APP_NAME'))
   const issuanceApp = getAppByName(installedApps, env('ISSUANCE_APP_NAME'))
   const agreementApp = getAppByName(installedApps, env('AGREEMENT_APP_NAME'))
+  const tokenManagerApp = getAppByName(installedApps, env('TOKENS_APP_NAME'))
 
+  const tokenManagerContract = useContract(
+    tokenManagerApp?.address,
+    hookedTokenManangerAbi
+  )
   const agreementContract = useContract(agreementApp?.address, agreementAbi)
 
   // Conviction voting actions
@@ -296,6 +302,61 @@ export default function useActions() {
     [agreementContract]
   )
 
+  // HookedTokenManager actions
+  // const approveWrapAmount = useCallback(
+  //   async (wrapAmount, onDone = noop) => {
+  //     if (!tokenManagerContract) {
+  //       return
+  //     }
+
+  //     const wappableToken = await tokenManagerContract.wrappableToken()
+
+  //     if (wappableToken === ZERO_ADDR) {
+  //       return
+  //     }
+
+  //     const approveData = encodeFunctionData(feeTokenContract, 'approve', [
+  //       wappableToken,
+  //       wrapAmount.toString(10),
+  //     ])
+  //     const intent = [
+  //       {
+  //         data: approveData,
+  //         from: account,
+  //         to: wappableToken,
+  //         description: 'Approve TKN',
+  //       },
+  //     ]
+
+  //     if (mounted()) {
+  //       onDone(intent)
+  //     }
+  //   },
+  //   [account, feeTokenContract, agreementApp, mounted]
+  // )
+
+  const wrapp = useCallback(
+    async amount => {
+      if (!tokenManagerContract) {
+        return
+      }
+
+      await tokenManagerContract.wrapp(amount)
+    },
+    [tokenManagerContract]
+  )
+
+  const unwrapp = useCallback(
+    async amount => {
+      if (!tokenManagerContract) {
+        return
+      }
+
+      await tokenManagerContract.unwrapp(amount)
+    },
+    [tokenManagerContract]
+  )
+
   // TODO: Memoize objects
   return {
     convictionActions: {
@@ -319,6 +380,10 @@ export default function useActions() {
       approveChallengeTokenAmount,
       getAllowance,
       getChallenge,
+    },
+    tokenManagerActions: {
+      wrapp,
+      unwrapp,
     },
   }
 }

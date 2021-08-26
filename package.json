@@ -3,24 +3,43 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
+    "3box": "^1.19.1",
+    "@1hive/1hive-ui": "^1.0.10",
+    "@1hive/connect-gardens": "^0.1.2",
+    "@1hive/connect-react": "^0.8.6",
+    "@1hive/gardens-dao-list": "^1.0.15",
+    "@aragon/connect-agreement": "^0.0.0-beta.14",
+    "@juggle/resize-observer": "^3.2.0",
+    "@nivo/core": "^0.73.0",
+    "@nivo/line": "^0.73.0",
+    "bignumber.js": "^9.0.0",
+    "clipboard-polyfill": "^3.0.3",
+    "dayjs": "^1.8.34",
+    "ethers": "5.0.8",
+    "is-ipfs": "^2.0.0",
+    "qrcode.react": "^1.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-dropzone": "^11.3.4",
+    "react-lottie-player": "^1.3.3",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
+    "react-spring": "^8.0.0",
+    "react-use-gesture": "5.2.4",
+    "react-use-measure": "^2.0.1",
+    "styled-components": "^5.0.0",
+    "svgo": "^1.3.2",
+    "urql": "^1.10.1",
+    "use-wallet": "^0.7.1",
+    "web-vitals": "^1.0.1",
+    "web3-utils": "^1.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "yarn run sync-assets && craco start",
+    "build": "yarn run sync-assets && craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "sync-assets": "copy-aragon-ui-assets ./public"
   },
   "eslintConfig": {
     "extends": [
@@ -39,5 +58,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^6.2.0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.1.2"
   }
 }

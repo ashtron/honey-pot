@@ -48,7 +48,7 @@ function ConectWallet({ onDismiss }) {
         `}
       >
         <Button
-          onClick={onDismiss}
+          onClick={() => onDismiss(false)}
           wide
           css={`
             margin-top: ${3 * GU}px;

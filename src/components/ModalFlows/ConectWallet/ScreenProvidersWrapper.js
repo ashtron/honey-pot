@@ -26,7 +26,7 @@ function ScreenProvidersWrapper({ onError, onSuccess }) {
       return next()
     }
     if (wallet.account) {
-      return onSuccess()
+      return onSuccess(true)
     }
   }, [error, next, onError, onSuccess, wallet])
 

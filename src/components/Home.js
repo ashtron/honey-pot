@@ -30,8 +30,11 @@ function Home() {
     toast('Saved!')
   }, [toast])
 
-  const handleCloseModal = useCallback(() => {
+  const handleCloseModal = useCallback(accountConnected => {
     setConnectModalVisible(false)
+    if (accountConnected) {
+      setOnboardingVisible(true)
+    }
   }, [])
 
   return (

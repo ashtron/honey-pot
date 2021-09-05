@@ -4,6 +4,7 @@ import { Button, GU, useLayout, useTheme, useViewport } from '@1hive/1hive-ui'
 import desktopBanner from '@assets/landingBanner.png'
 import mobileBanner from '@assets/landingBanner-mobile.png'
 import tabletBanner from '@assets/landingBanner-tablet.png'
+import env from '@/environment'
 
 const BANNERS = {
   small: {
@@ -114,7 +115,7 @@ const LandingBanner = React.forwardRef(({ onCreateGarden }, ref) => {
                   margin-right: ${2 * GU}px;
                 `}
               />
-              {above('medium') && (
+              {!env('PRODUCTION') && above('medium') && (
                 <Button
                   label="Create a Garden"
                   mode="strong"

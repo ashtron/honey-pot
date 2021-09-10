@@ -21,6 +21,7 @@ import { ConvictionBar } from '../ConvictionVisuals'
 import DisputableActionInfo from '../DisputableActionInfo'
 import DisputableInfo from '../DisputableInfo'
 import DisputeFees from '../DisputeFees'
+import DiscourseComments from '@/components/DiscourseComments'
 import IdentityBadge from '@components/IdentityBadge'
 import MultiModal from '@components/MultiModal/MultiModal'
 import ProposalActions from './ProposalActions'
@@ -79,6 +80,9 @@ function ProposalDetail({
   } = proposal || {}
 
   const { background, borderColor } = getStatusAttributes(proposal, theme)
+
+  // We take the last section of the link that includes the topicId
+  const discourseTopicId = link.split('/').reverse()[0]
 
   const handleBack = useCallback(() => {
     history.goBack()
@@ -182,16 +186,16 @@ function ProposalDetail({
                             requestToken.decimals
                           )}
                         </strong>{' '}
-                        {requestToken.name} out of{' '}
+                        {requestToken.symbol} out of{' '}
                         <strong>
                           {formatTokenAmount(commonPool, requestToken.decimals)}
                         </strong>{' '}
-                        {requestToken.name} currently in the common pool.
+                        {requestToken.symbol} currently in the common pool.
                       </span>
                     ) : (
                       <span>
                         This suggestion is for signaling purposes and is not
-                        requesting any {requestToken.name}
+                        requesting any {requestToken.symbol}
                       </span>
                     )}
                   </div>
@@ -354,6 +358,25 @@ function ProposalDetail({
             </div>
           }
         />
+        <Split
+          primary={
+            link && (
+              <div>
+                <div
+                  css={`
+                    ${textStyle('title3')};
+                  `}
+                >
+                  Comments
+                </div>
+                <DiscourseComments topicId={discourseTopicId} />
+                <Button href={link} target="_blank">
+                  Continue discussion ↗
+                </Button>
+              </div>
+            )
+          }
+        />
       </div>
       <MultiModal
         visible={modalVisible}
@@ -463,7 +486,7 @@ const Amount = ({
                 {requestToken.symbol}
               </span>
               <Help hint="">
-                Converted to {requestToken.name} at time of execution
+                Converted to {requestToken.symbol} at time of execution
               </Help>
             </div>
           )}
